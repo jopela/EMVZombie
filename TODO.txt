@@ -1,3 +1,4 @@
 1. Define/Refine requirements with prototype.
 2. Add documentation.
 3. Modify .gitignore to ignore eclipse project.
+4. Decide weither to use Jython or Clojure.
