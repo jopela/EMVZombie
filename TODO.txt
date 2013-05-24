@@ -1,1 +1,3 @@
-1. add GPL liscence v 3.0
+1. Define/Refine requirements with prototype.
+2. Add documentation.
+3. Modify .gitignore to ignore eclipse project.
