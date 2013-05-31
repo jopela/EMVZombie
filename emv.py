@@ -79,9 +79,9 @@ class Card:
         
         # GET PROCESSING OPTIONS encoding
         command = CommandAPDU(0x80, 0xa8, 0x00, 0x00, pdol)
-                       
+        response = self.ch.transmit(command)                       
         
-        return
+        return command.getBytes(), response.getBytes()
     
     def internal_authenticate(self):
         print "please implement me"
@@ -91,8 +91,10 @@ class Card:
         print "please implement me"
         return
     
-    def read_record(self, sfi,rnbr):
-        print "please implement me"
+    def read_record(self, sfi, rnbr):
+        
+        command = CommandAPDU()
+        
         return
     
     def verify(self, sfi,rnbr):
