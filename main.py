@@ -18,9 +18,10 @@ You should have received a copy of the GNU General Public License
 along with EMVZombie.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
+# this is a test
 def main():
     
-    print "PATATE"
+    
     return               
     
 if __name__ == "__main__":
