@@ -72,8 +72,15 @@ class Card:
         print "please implement me"
         return
     
-    def get_processing_options(self):
-        print "please implement me"
+    def get_processing_options(self, pdol='\x83\00'):
+        """ Returns the command/response pair for the GET PROCESSING OPTIONS
+        command. If the pdol parameter is not specified, the default pdol value
+        of 0x8300 is used."""
+        
+        # GET PROCESSING OPTIONS encoding
+        command = CommandAPDU(0x80, 0xa8, 0x00, 0x00, pdol)
+                       
+        
         return
     
     def internal_authenticate(self):
