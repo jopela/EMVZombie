@@ -18,10 +18,18 @@ You should have received a copy of the GNU General Public License
 along with EMVZombie.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-# this is a test
+import emv
+from util import dprint
+from util import tohex8
+
 def main():
     
+    # try to select an application (VISA Credit card.)
+    card = emv.Card()
+    command , response = card.select(emv.VISA_COD)
     
+    dprint(command)
+    dprint(response)           
     return               
     
 if __name__ == "__main__":

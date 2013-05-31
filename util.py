@@ -24,3 +24,13 @@ def die(msg):
     print msg
     sys.exit(-1)
     
+def tohex8(val):
+    return hex((val + (1 << 8)) % (1 << 8))
+
+def dprint(val):
+    """Debug printing function for command/response pair."""
+    print "".join([tohex8(i)[2:] for i in val])
+    return
+    
+    
+    
