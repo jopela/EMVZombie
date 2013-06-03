@@ -27,20 +27,12 @@ def main():
     card = emv.Card()
     
     select_c , select_r = card.select(emv.VISA_COD)
-    print "select command"
-    
-    print resp2str(select_c)
-    print resp2str(select_r)
-            
     gpo_c, gpo_r = card.get_processing_options() 
-    print "get processing option"
-    print resp2str(gpo_c)
-    print resp2str(gpo_r)
-    
+        
     aip, afl = emv.parse_gpo_resp(gpo_r)
-    print "parsed GET PROCESSING OPTIONS VALUES."
-    print "aip", resp2str(aip) 
-    print "afl", resp2str(afl)
+    
+    
+    print "afl parsed", emv.parse_afl(afl)
                    
     return               
     

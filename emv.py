@@ -155,6 +155,8 @@ def parse_afl(afl):
             result.append((sfi,i))
         
         afl = afl[4:]
+        
+    return result
             
         
         
