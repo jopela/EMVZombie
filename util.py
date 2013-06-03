@@ -20,17 +20,18 @@ along with EMVZombie.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
 
+
+# Miscellaneous  helper functions use throughout all modules
+
 def die(msg):
     print msg
     sys.exit(-1)
-    
-def tohex8(val):
-    return hex((val + (1 << 8)) % (1 << 8))
 
-def dprint(val):
-    """Debug printing function for command/response pair."""
-    print "".join([tohex8(i)[2:] for i in val])
-    return
+def usign(val):
+    """Returns the unsigned value of the given integer on 8 bits."""
+    return (val + (1 << 8)) % (1 << 8)
     
-    
-    
+def resp2str(val):
+    """returns a human readable string from a card command response."""
+    return "".join([hex(i)[2:].zfill(2) for i in val]) 
+       

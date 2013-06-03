@@ -20,9 +20,16 @@ along with EMVZombie.  If not, see <http://www.gnu.org/licenses/>.
 
 from javax.smartcardio import CommandAPDU
 from terminal import ch_def
+from util import usign
 
 # VISA application AIDs.
 VISA_COD = "\xA0\x00\x00\x00\x03\x10\x10"
+
+# MasterCard application AIDs.
+# ...
+
+# Interact application AIDs.
+INTERAC_CAN = "\xA0\x00\x00\x02\x77\x10\x10"
 
 # TODO: Refactor this class code for use with the python with statement?
 class Card:
@@ -40,9 +47,7 @@ class Card:
         
         # SELECT command.
         command = CommandAPDU(0x00, 0xa4, 0x04, 0x00, aid)
-        response = self.ch.transmit(command)
-        
-        return command.getBytes(), response.getBytes()
+        return self.send_command(command)                 
         
     def application_block(self):
         print "please implement me"
@@ -79,25 +84,90 @@ class Card:
         
         # GET PROCESSING OPTIONS encoding
         command = CommandAPDU(0x80, 0xa8, 0x00, 0x00, pdol)
-        response = self.ch.transmit(command)                       
-        
-        return command.getBytes(), response.getBytes()
+        return self.send_command(command)
     
     def internal_authenticate(self):
         print "please implement me"
-        return
+        return    
     
     def pin_change_unblock(self):
         print "please implement me"
         return
     
-    def read_record(self, sfi, rnbr):
-        
-        command = CommandAPDU()
+    def read_record(self, sfi, rnbr):        
+        # read record command encoding.
+        command = CommandAPDU(0x00, 0x82, rnbr, (sfi << 3 | 4))
+        return self.send_command(command)
         
         return
-    
+        
     def verify(self, sfi,rnbr):
         print "please implement me"
         return
+    
+    # Helper methods
+    def send_command(self,command):
+        """ takes car of sending a given command and preparing the raw
+        response for function return. """
+        
+        # this will take the array of signed values and cast it to a
+        # list of "unsigned" integer. This is the expected type by most
+        # of the EMVzombie toolkit functions.  
+        f = lambda x : [usign(i) for i in x] 
+        
+        response = self.ch.transmit(command).getBytes()
+        command = command.getBytes()
+                
+        return f(command), f(response)
+    
+# Other EMV related functions.
+def parse_gpo_resp(resp):
+    """ Extracts and return the Application Interchange Profile and the
+    AFLs from the GET PROCESSING OPTIONS command response. """
+    # determine the format of the GET PROCESSING OPTIONS response message.
+ 
+    print "length before if",  len(resp)
+    if resp.pop(0) == 0x80:
+        print "length after if", len(resp)
+        # disregard the length
+        resp.pop(0)
+        
+        # AIP consists of the next 2 bytes.
+        aip = resp[:2]
+        # and the AFL is the rest, minus the status code included in
+        # the response.
+        afl = resp[2:-2]
+        
+        return aip, afl
+                
+    else:
+        print "format for the GPO response not yet supported ..."
+        return None 
+    
+def parse_afl(afl):
+    """takes an AFL and returns a list of tuples of the form (sfi, rnbr)."""
+    result = []
+    while len(afl) != 0:
+        sfi = (afl[0] & 0xf8) >> 3
+        first_record = afl[1]
+        last_record = afl[2]
+        for i in range(first_record,last_record+1):
+            result.append((sfi,i))
+        
+        afl = afl[4:]
+            
+        
+        
+    
+      
+  
+ 
+    
+    
+    
+    
+    
+
+
+
     
