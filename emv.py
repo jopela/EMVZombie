@@ -96,10 +96,21 @@ class Card:
     
     def read_record(self, sfi, rnbr):        
         # read record command encoding.
-        command = CommandAPDU(0x00, 0x82, rnbr, (sfi << 3 | 4))
-        return self.send_command(command)
+        # command = CommandAPDU(0x00, 0x82, rnbr, (sfi << 3 | 4))
         
-        return
+        # TODO: for some reason, the commented command above DOES NOT WORK.
+        # you need to manually add the Le parameter of the read_record command
+        # Le. This should be investigated further but in the meantime,
+        # let's use a work around and add it ourself manually.
+        
+        # Does this only happen when there is no command body? read further
+        # about it in EMV book 3 v4.3 
+        tmp = CommandAPDU(0x00, 0xb2, rnbr, (sfi << 3 | 4)).getBytes()
+        tmp.append(0)
+        command = CommandAPDU(tmp)
+                
+        return self.send_command(command)
+               
         
     def verify(self, sfi,rnbr):
         print "please implement me"
@@ -113,7 +124,7 @@ class Card:
         # this will take the array of signed values and cast it to a
         # list of "unsigned" integer. This is the expected type by most
         # of the EMVzombie toolkit functions.  
-        f = lambda x : [usign(i) for i in x] 
+        f = lambda x : tuple([usign(i) for i in x]) 
         
         response = self.ch.transmit(command).getBytes()
         command = command.getBytes()
@@ -125,10 +136,9 @@ def parse_gpo_resp(resp):
     """ Extracts and return the Application Interchange Profile and the
     AFLs from the GET PROCESSING OPTIONS command response. """
     # determine the format of the GET PROCESSING OPTIONS response message.
- 
-    print "length before if",  len(resp)
+    resp = list(resp)
+    
     if resp.pop(0) == 0x80:
-        print "length after if", len(resp)
         # disregard the length
         resp.pop(0)
         

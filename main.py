@@ -28,23 +28,45 @@ from util import resp2str, usign
 
 def main():
     
+    print "GO GO Gadget o-card!"
+    # DEBUG quick function renaming
+    f = lambda x: resp2str(x)
+    
     # Application selection
     card = emv.Card()
     
     # SELECT
     select_c , select_r = card.select(emv.VISA_COD)
     
+    print "SELECT"
+    print resp2str(select_c), resp2str(select_r)
+    
     # GET PROCESSING OPTIONS
-    gpo_c, gpo_r = card.get_processing_options() 
+    gpo_c, gpo_r = card.get_processing_options()
+    
+    print "GET PROCESSING OPTIONS"
+    print f(gpo_c), f(gpo_r)    
         
     # Extract the aip and the afl from the GPO answer.
     aip, afl = emv.parse_gpo_resp(gpo_r)
     
     # Read all the records from the card into a dictionary.
+    records_id = emv.parse_afl(afl)
     card_records = dict()
     
+    for r in records_id:
+        sfi = r[0]
+        rnbr = r[1]
+        rrec_c, rrec_r = card.read_record(sfi, rnbr)
+        card_records[rrec_c] = rrec_r        
+    
+    print "READ RECORD (all)"
+    
+    for k in card_records.keys():
+        print f(k),f(card_records[k])
         
-                   
+    print "done!"
+                  
     return               
     
 if __name__ == "__main__":

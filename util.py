@@ -33,5 +33,11 @@ def usign(val):
     
 def resp2str(val):
     """returns a human readable string from a card command response."""
-    return "".join([hex(i)[2:].zfill(2) for i in val]) 
+    return "".join([hex(i)[2:].zfill(2) for i in val])
+
+def human(ite):
+    """Takes an iterable of byte[] and return a list containing the hex 
+    representations of these byte[]."""
+    
+    return [resp2str(val) for val in ite] 
        
