@@ -72,9 +72,10 @@ class Card:
     def get_challenge(self):
         """returns the command/response pair for the GET CHALLENGE command."""
         
-        # This java package is either cursed or I do not get it.
+        # This Java package is either cursed or I do not get it.
         # the command below will not work. Issuing the command by "hand"
-        # as a work around until further investigation.
+        # as a work around until further investigation. This is similar
+        # to the read_record, and get_data problem.
           
         # command = CommandAPDU(0x00, 0x84, 0x00, 0x00)
         command = CommandAPDU('\x00\x84\x00\x00\x00')

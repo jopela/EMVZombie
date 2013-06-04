@@ -3,6 +3,10 @@ General
 1. Define/Refine requirements with prototype.
 2. Add documentation.
 
+Code cleanup
+============
+1. make sure that the comments are uniform in the emv.py module.
+
 Technical
 =========
 1. refactor the code to put Card object in terminal.py and rename the card
