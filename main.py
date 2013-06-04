@@ -24,7 +24,7 @@ along with EMVZombie.  If not, see <http://www.gnu.org/licenses/>.
 
 #TODO: include command line argument parsing logic in main.
 import emv
-from util import resp2str, usign
+from util import resp2str
 
 def main():
     
@@ -66,7 +66,7 @@ def main():
     
     gdat_c, gdat_r = card.get_data(0x9f, 0x51)
     print "GET DATA"
-    print "application currency code."
+    print "-- application currency code."
     print f(gdat_c), f(gdat_r)
         
     print "done!"
