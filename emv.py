@@ -70,7 +70,7 @@ class Card:
         return
     
     def get_challenge(self):
-        print "please implement me"
+        print "please implement me."        
         return
     
     def get_data(self, msb_tag, lsb_tag):
@@ -78,9 +78,14 @@ class Card:
         msb_tag and lsb_tag represent the most significant and least 
         significant part of the tag byte respectively."""
         
-        # GET DATA command encoding.
-        command = CommandAPDU(0x80, 0xca, msb_tag, lsb_tag)
-        return
+        # GET DATA command encoding. 
+        
+        # Same problem as in READ RECORD. See read_record() for more details.
+        tmp = CommandAPDU(0x80, 0xca, msb_tag, lsb_tag).getBytes()
+        tmp.append(0)
+        command = CommandAPDU(tmp)
+        return self.send_command(command)
+                
     
     def get_processing_options(self, pdol='\x83\00'):
         """ Returns the command/response pair for the GET PROCESSING OPTIONS
