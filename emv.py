@@ -20,7 +20,7 @@ along with EMVZombie.  If not, see <http://www.gnu.org/licenses/>.
 
 from javax.smartcardio import CommandAPDU
 from terminal import ch_def
-from util import usign
+from util import usign, resp2str
 
 # VISA application AIDs.
 VISA_COD = "\xA0\x00\x00\x00\x03\x10\x10"
@@ -70,9 +70,16 @@ class Card:
         return
     
     def get_challenge(self):
-        print "please implement me."        
-        return
-    
+        """returns the command/response pair for the GET CHALLENGE command."""
+        
+        # This java package is either cursed or I do not get it.
+        # the command below will not work. Issuing the command by "hand"
+        # as a work around until further investigation.
+          
+        # command = CommandAPDU(0x00, 0x84, 0x00, 0x00)
+        command = CommandAPDU('\x00\x84\x00\x00\x00')
+        return self.send_command(command)
+                   
     def get_data(self, msb_tag, lsb_tag):
         """ Returns the command/response pair for the GET DATA command. The 
         msb_tag and lsb_tag represent the most significant and least 

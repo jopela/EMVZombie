@@ -62,12 +62,15 @@ def main():
     print "READ RECORD (all)"
     for k in card_records.keys():
         print f(k),f(card_records[k])
-        
-    
+            
     gdat_c, gdat_r = card.get_data(0x9f, 0x51)
     print "GET DATA"
     print "-- application currency code."
     print f(gdat_c), f(gdat_r)
+    
+    gchal_c, gchal_r = card.get_challenge()
+    print "GET CHALLENGE"
+    print f(gchal_c), f(gchal_r)
         
     print "done!"
     return               
