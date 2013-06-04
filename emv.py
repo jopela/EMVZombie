@@ -45,7 +45,7 @@ class Card:
         """ Returns the command/response pair for the SELECT command.
          Parameter aid is a byte string representing the aid to select."""
         
-        # SELECT command.
+        # SELECT command encoding.
         command = CommandAPDU(0x00, 0xa4, 0x04, 0x00, aid)
         return self.send_command(command)                 
         
@@ -73,8 +73,13 @@ class Card:
         print "please implement me"
         return
     
-    def get_data(self):
-        print "please implement me"
+    def get_data(self, msb_tag, lsb_tag):
+        """ Returns the command/response pair for the GET DATA command. The 
+        msb_tag and lsb_tag represent the most significant and least 
+        significant part of the tag byte respectively."""
+        
+        # GET DATA command encoding.
+        command = CommandAPDU(0x80, 0xca, msb_tag, lsb_tag)
         return
     
     def get_processing_options(self, pdol='\x83\00'):

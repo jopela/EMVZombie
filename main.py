@@ -28,13 +28,12 @@ from util import resp2str, usign
 
 def main():
     
-    print "GO GO Gadget o-card!"
     # DEBUG quick function renaming
     f = lambda x: resp2str(x)
     
-    # Application selection
+    # Read all public card data.
     card = emv.Card()
-    
+        
     # SELECT
     select_c , select_r = card.select(emv.VISA_COD)
     
@@ -61,12 +60,10 @@ def main():
         card_records[rrec_c] = rrec_r        
     
     print "READ RECORD (all)"
-    
     for k in card_records.keys():
         print f(k),f(card_records[k])
         
     print "done!"
-                  
     return               
     
 if __name__ == "__main__":
