@@ -6,6 +6,8 @@ General
 Code cleanup
 ============
 1. make sure that the comments are uniform in the emv.py module.
+2. for financial related function that need body, change the function
+signature to accept a list of bytes instead of a sting?  
 
 Technical
 =========

@@ -65,13 +65,16 @@ class Card:
         print "please implement me"
         return
     
-    def generate_application_cryptogram(self):
-        print "please implement me"
+    def generate_application_cryptogram(self, tran_data):
+        """ Returns the command/response pair for the GENERATE APPLICATION
+        CRYPTOGRAM command. The parameter tran_data is the transaction related
+        specified by either CDOL1 or CDOL2. """       
+        
+        
         return
     
     def get_challenge(self):
         """returns the command/response pair for the GET CHALLENGE command."""
-        
         # This Java package is either cursed or I do not get it.
         # the command below will not work. Issuing the command by "hand"
         # as a work around until further investigation. This is similar
@@ -104,9 +107,14 @@ class Card:
         command = CommandAPDU(0x80, 0xa8, 0x00, 0x00, pdol)
         return self.send_command(command)
     
-    def internal_authenticate(self):
-        print "please implement me"
-        return    
+    def internal_authenticate(self, auth_data):
+        """ Return the command/response pair for the INTERNAL AUTHENTICATE
+        command. The parameter auth_data shall be encoded according to the DDOL.
+        """
+        #TODO: test card does not support DDA. Find a test card that does and
+        # test this function.
+        command = CommandAPDU(0x00,0x88,0x00,0x00, auth_data)        
+        return self.send_command(command)    
     
     def pin_change_unblock(self):
         print "please implement me"
