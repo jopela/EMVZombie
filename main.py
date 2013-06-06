@@ -24,15 +24,16 @@ along with EMVZombie.  If not, see <http://www.gnu.org/licenses/>.
 
 #TODO: include command line argument parsing logic in main.
 import emv
+import terminal
 from util import resp2str
 
 def main():
     
-    # DEBUG quick function renaming
+    # DEBUG: quick function renaming
     f = lambda x: resp2str(x)
     
     # Read all public card data.
-    card = emv.Card()
+    card = terminal.Terminal()
         
     # SELECT
     select_c , select_r = card.select(emv.VISA_COD)
@@ -49,6 +50,8 @@ def main():
     # Extract the aip and the afl from the GPO answer.
     aip, afl = emv.parse_gpo_resp(gpo_r)
     
+    print "Application Interchange Profile"
+    print f(aip) 
     # Read all the records from the card into a dictionary.
     records_id = emv.parse_afl(afl)
     card_records = dict()

@@ -11,9 +11,8 @@ signature to accept a list of bytes instead of a sting?
 
 Technical
 =========
-1. refactor the code to put Card object in terminal.py and rename the card
-object a terminal. It makes more sense to call the object Card, an object
-Terminal since it's always the terminal that issue commands.
+1. Add in EMV functions to "pretty print" things read from the card such as
+IAC, CIAC, AIP AFL etc etc.
 
 2. keep in EMV only the functions that can be used on Terminal response (e.g:
 parse_gpo_resp, parse_alf etc.)

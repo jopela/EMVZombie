@@ -20,7 +20,6 @@ along with EMVZombie.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
 
-
 # Miscellaneous  helper functions use throughout all modules
 
 def die(msg):
