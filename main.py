@@ -26,56 +26,30 @@ along with EMVZombie.  If not, see <http://www.gnu.org/licenses/>.
 import emv
 import terminal
 from util import resp2str
+import argparse
 
 def main():
     
-    # DEBUG: quick function renaming
-    f = lambda x: resp2str(x)
+    parser = argparse.ArgumentParser()
     
-    # Read all public card data.
-    card = terminal.Terminal()
+    parser.add_argument(
+                '-a',
+                '--aid',
+                help='creates a card clone for application aid'\
+                ' if this is not specified, the tool will create a clone with'\
+                ' the content of all supported applications.',
+                default = None
+                )
+    
+    parser.add_argument(
+                '-l',
+                '--list-aid',
+                help='print the list of all supported application aid and quit.'
+                )
+    
+    input = ['--help']
+    args = parser.parse_args(input)
         
-    # SELECT
-    select_c , select_r = card.select(emv.VISA_COD)
-    
-    print "SELECT"
-    print resp2str(select_c), resp2str(select_r)
-    
-    # GET PROCESSING OPTIONS
-    gpo_c, gpo_r = card.get_processing_options()
-    
-    print "GET PROCESSING OPTIONS"
-    print f(gpo_c), f(gpo_r)    
-        
-    # Extract the aip and the afl from the GPO answer.
-    aip, afl = emv.parse_gpo_resp(gpo_r)
-    
-    print "Application Interchange Profile"
-    print f(aip) 
-    # Read all the records from the card into a dictionary.
-    records_id = emv.parse_afl(afl)
-    card_records = dict()
-    
-    for r in records_id:
-        sfi = r[0]
-        rnbr = r[1]
-        rrec_c, rrec_r = card.read_record(sfi, rnbr)
-        card_records[rrec_c] = rrec_r        
-    
-    print "READ RECORD (all)"
-    for k in card_records.keys():
-        print f(k),f(card_records[k])
-            
-    gdat_c, gdat_r = card.get_data(0x9f, 0x51)
-    print "GET DATA"
-    print "-- application currency code."
-    print f(gdat_c), f(gdat_r)
-    
-    gchal_c, gchal_r = card.get_challenge()
-    print "GET CHALLENGE"
-    print f(gchal_c), f(gchal_r)
-        
-    print "done!"
     return               
     
 if __name__ == "__main__":

@@ -22,6 +22,13 @@ from javax.smartcardio import CommandAPDU
 from terminal import ch_def
 from util import usign, resp2str
 
+
+#Application dictionary
+aids = {"visa_cod":"\xA0\x00\x00\x00\x03\x10\x10",
+        "interac_can":"\xA0\x00\x00\x02\x77\x10\x10",
+        "pse":"\x31\x50\x41\x59\x2e\x53\x59\x53\x2e\x44\x44\x46\x30\x31"
+        } # Add all applications found here: 
+
 # VISA application AIDs.
 VISA_COD = "\xA0\x00\x00\x00\x03\x10\x10"
 
