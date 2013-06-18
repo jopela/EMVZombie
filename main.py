@@ -47,10 +47,12 @@ def main():
                 help='print the list of all supported application aid and quit.'
                 )
     
-    input = ['--help']
-    args = parser.parse_args(input)
-        
-    return               
+            
+    return
+
+
+def aid_list():
+    """ Returns a list of the application supported by the card . """                
     
 if __name__ == "__main__":
     main()
