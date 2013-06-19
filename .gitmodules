@@ -1,0 +1,3 @@
+[submodule "HairyEMV"]
+	path = HairyEMV
+	url = https://github.com/jopela/HairyEMV.git

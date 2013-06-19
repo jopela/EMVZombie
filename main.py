@@ -43,16 +43,33 @@ def main():
     
     parser.add_argument(
                 '-l',
-                '--list-aid',
-                help='print the list of all supported application aid and quit.'
+                '--listaid',
+                help='print the list of all supported application aid and quit.',
+                action='store_true'
                 )
     
+    args =  parser.parse_args(['--listaid'])
+    
+    if args.listaid:
+        aid_list()
             
     return
 
-
 def aid_list():
-    """ Returns a list of the application supported by the card . """                
+    """ Returns the set of the application supported by the card . """
+    
+    term = terminal.Terminal()
+    
+    supp_app = set([])
+    
+    # PSE selection.
+    sel_aid = emv.aid['pse']
+    sel_pse_c, sel_pse_r, sel_pse_s = term.select(sel_aid)
+    
+    # If PSE is supported, add it to the list of supported applications
+    # and also add it's listing to the list of supported applications. 
+    if sel_pse_s ==       
+    
     
 if __name__ == "__main__":
     main()
