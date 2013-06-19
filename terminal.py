@@ -186,7 +186,7 @@ class Terminal:
         return
     
     # Helper methods
-    def send_command(self,command):
+    def send_command(self,com):
         """ takes car of sending a given command and preparing the raw
         response for function return. """
         
@@ -195,10 +195,17 @@ class Terminal:
         # of the EMVzombie toolkit functions.  
         f = lambda x : tuple([usign(i) for i in x]) 
         
-        response = self.ch.transmit(command).getBytes()
-        command = command.getBytes()
+        response_all = self.ch.transmit(com).getBytes()
+        
+        response = response_all[:-2]
+        command = com.getBytes()
+        
+        sw1 = usign(response_all[-2])
+        sw2 = usign(response_all[-1])
+        
+        status = (sw1 << 8) | (sw2)
                 
-        return f(command), f(response)
+        return f(command), f(response), status
         
     
     
