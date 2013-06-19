@@ -56,21 +56,25 @@ def main():
     return
 
 def aid_list():
-    """ Returns the set of the application supported by the card . """
-    
+    """ Returns the set of aids supported by the card. """
+        
+    AID_INDEX = 0
+    DESCRIPTION_INDEX = 1
     term = terminal.Terminal()
-    
     supp_app = set([])
     
     # PSE selection.
     sel_aid = emv.aid['pse']
-    sel_pse_c, sel_pse_r, sel_pse_s = term.select(sel_aid)
+    sel_pse_c, sel_pse_r, sel_pse_s = term.select(sel_aid[AID_INDEX])
     
-    # If PSE is supported, add it to the list of supported applications
-    # and also add it's listing to the list of supported applications. 
-    if sel_pse_s ==       
-    
-    
+    # if the application supports pse, add it to the set of supported
+    # applications.
+    if sel_pse_s == 0x9000:
+        supp_app.add('pse')
+        # also add the list of application that can be extracted from the 
+        # pse response
+        print sel_pse_r     
+        
 if __name__ == "__main__":
     main()
 
