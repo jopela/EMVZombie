@@ -382,7 +382,7 @@ def cast(f):
     """ Decorator for the find function so that it can be used by supplying
     values returned directly from a card . """
         
-    # the function expects
+    # the function expects'
      
     
     

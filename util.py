@@ -20,8 +20,6 @@ along with EMVZombie.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
 
-# TODO: add unit tests un this module.
-
 # Miscellaneous  helper functions use throughout all modules
 
 def die(msg):
@@ -37,9 +35,22 @@ def resp2str(val):
     return "".join([hex(i)[2:].zfill(2) for i in val])
 
 def str2resp(val):
-    """returns a machine readable array of bytes from a human readable string.
-    """
+    """returns a machine readable string from a human readable string."""
     return "".join([chr(i) for i in val])
+
+def partition(val, n):
+    """ Returns a sequence of non overlapping lists of n items. 
+    
+    Example
+    =======
+    >>> partition('aabbccddeeff',2)
+    ('aa','bb','cc','dd','ff')
+    >>> partition('aaabbbcccddd',3)
+    ('aaa','ccc','ddd')
+    
+    """
+    
+    return 
 
 def human(ite):
     """Takes an iterable of byte[] and return a list containing the hex 
