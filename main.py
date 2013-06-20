@@ -76,9 +76,7 @@ def aid_list():
     sel_aid = emv.aid['pse']
     sel_pse_c, sel_pse_r, sel_pse_s = term.select(sel_aid[AID_INDEX])
     print sel_pse_r
-    
-    
-    
+        
     # If the application supports PSE, add it to the set of supported
     # applications.
     if sel_pse_s == 0x9000:

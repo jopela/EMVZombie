@@ -36,7 +36,8 @@ def resp2str(val):
 
 def str2resp(val):
     """returns a machine readable string from a human readable string."""
-    return "".join([chr(i) for i in val])
+    part = partition(val)
+    return tuple([chr(i) for i in part])
 
 def partition(val, n):
     """ Returns a sequence of non overlapping lists of n items taken from val. 
