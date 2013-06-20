@@ -39,7 +39,7 @@ def str2resp(val):
     return "".join([chr(i) for i in val])
 
 def partition(val, n):
-    """ Returns a sequence of non overlapping lists of n items. 
+    """ Returns a sequence of non overlapping lists of n items taken from val. 
     
     Example
     =======
@@ -48,10 +48,19 @@ def partition(val, n):
     >>> partition('aaabbbcccddd',3)
     ('aaa','ccc','ddd')
     
+        
     """
+    # stop recursive cases
+    if len(val) <= n:
+        return tuple([val])
+    # the partition of a list is a list made of the first n element + 
+    # the partition of the remaining elements.
+    else:
+        r = partition(val[n:],n)
+        v = [val[:n]]
+        v.extend(r)
+        return tuple(v)
     
-    return 
-
 def human(ite):
     """Takes an iterable of byte[] and return a list containing the hex 
     representations of these byte[]."""
