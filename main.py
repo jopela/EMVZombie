@@ -29,7 +29,6 @@ import argparse
 import supertlv
 from util import resp2str as r2str
 
-
 def main():
     
     parser = argparse.ArgumentParser()
@@ -50,11 +49,18 @@ def main():
                 action='store_true'
                 )
     
+    parser.add_argument(
+                '-c',
+                '--config',
+                help='path to the config file. For more detail see config.yaml',
+                type=argparse.FileType()
+                )
+    
     args =  parser.parse_args(['--listaid'])
     
     if args.listaid:
         aid_list()
-            
+                   
     return
 
 def aid_list():
@@ -62,21 +68,42 @@ def aid_list():
         
     AID_INDEX = 0
     DESCRIPTION_INDEX = 1
+    
     term = terminal.Terminal()
     supp_app = set([])
     
     # PSE selection.
     sel_aid = emv.aid['pse']
     sel_pse_c, sel_pse_r, sel_pse_s = term.select(sel_aid[AID_INDEX])
+    print sel_pse_r
     
-    # if the application supports pse, add it to the set of supported
+    # If the application supports PSE, add it to the set of supported
     # applications.
     if sel_pse_s == 0x9000:
-        supp_app.add('pse')
-        # also add the list of application that can be extracted from the 
-        # pse response
-        print supertlv.human(r2str(sel_pse_r))     
+        pse_aid = supertlv.find("84", r2str(sel_pse_r))
+        # if we cannot retrieve the aid from the PSE response, it means the 
+        # the card sent a malformed or invalid response. We do not really care
+        # but we need to add the AID by some other way.
+        if not pse_aid:
+            pse_aid = [i for i in sel_aid[AID_INDEX] if (i != '\\' and i != 'x')]
         
+        supp_app.add(pse_aid)
+        # Also add the list of applications that can be extracted from the 
+        # pse response.
+        sfi = supertlv.find("88")
+        
+        if sfi:
+            status = 0x9000
+            while status == 0x9000:
+                # read all the possible record of that SFI
+                break
+            
+def select_all(terminal):
+    """ Try to select all the applications know to the terminal and 
+    returns the set of AID that returned 0x9000 for the SELECT command.
+    """
+    return None
+                
 if __name__ == "__main__":
     main()
 

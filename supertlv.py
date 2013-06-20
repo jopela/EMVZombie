@@ -2,6 +2,7 @@
 
 import argparse
 import doctest
+import sys
 
 def main():
 
@@ -12,7 +13,7 @@ def main():
             'TLV',
             help='TLV string (coded in hexadecimal).'
             )
-
+    
     # doctest flag.
     parser.add_argument(
             '-t',
@@ -92,18 +93,40 @@ def tail(tlv):
 
     return tlv[len(h):]
 
-def find(tag, tlv):
+#TODO: Add this function in HairyEMV tlv module !
+def find(in_tag, tlv):
     """ Takes tlv and search for tag, returning the Tag-Length-Value triad
-    associated with it if found. 
+    associated with it if found. Return none if not found 
     
     Example
     =======
     >>> find('9F11','6F20840E315041592E5359532E4444463031A50E8801015F2D046672656E9F110101')
     '9F110101'
     """
-
-    return "please implement me!"
-
+    
+    # First assume we cannot find it.
+    result = None
+    
+    # Search the entire tlv string for tag.
+    while tlv:
+        current = head(tlv)
+        tlv = tail(tlv)
+      
+        # Return the tlv value if the current object is a match.  
+        if in_tag == tag(current):
+            result = current
+            break
+        
+        # Else, recursively look for the tag in the current object childs.
+        else:
+            for c in children(current):
+                result = find(in_tag, c)
+                if result:
+                    break
+    
+    # Either found or None.                        
+    return result
+    
 def children(tlv):
     """ Takes a ber-tlv encoded object and return the list of tlv data object
     contained in it's value field.
@@ -354,6 +377,15 @@ def die(msg):
     status."""
     sys.stderr.write(msg+"\n")
     sys.exit(-1)
+    
+def cast(f):
+    """ Decorator for the find function so that it can be used by supplying
+    values returned directly from a card . """
+        
+    # the function expects
+     
+    
+    
 
 if __name__ == "__main__":
     import doctest
