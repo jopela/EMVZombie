@@ -25,8 +25,10 @@ along with EMVZombie.  If not, see <http://www.gnu.org/licenses/>.
 #TODO: include command line argument parsing logic in main.
 import emv
 import terminal
-from util import resp2str
 import argparse
+import supertlv
+from util import resp2str as r2str
+
 
 def main():
     
@@ -73,7 +75,7 @@ def aid_list():
         supp_app.add('pse')
         # also add the list of application that can be extracted from the 
         # pse response
-        print sel_pse_r     
+        print supertlv.human(r2str(sel_pse_r))     
         
 if __name__ == "__main__":
     main()
