@@ -25,16 +25,16 @@ from util import usign, resp2str
 
 #Application AID dictionary. content is a tuple with first
 aid = {
-       "visa_cod":("\xA0\x00\x00\x00\x03\x10\x10","VISA - Credit"),
-       "visa_ele":("\xA0\x00\x00\x00\x03\x20\x10","VISA - Electron"),
-       "visa_pay":("\xA0\x00\x00\x00\x03\x20\x20","VISA - Pay"),
-       "visa_plu":("\xA0\x00\x00\x00\x03\x80\x10","VISA - Plus"),
-       "interac_can":("\xA0\x00\x00\x02\x77\x10\x10","Interac Canada"),
-       "pse":("\x31\x50\x41\x59\x2e\x53\x59\x53\x2e\x44\x44\x46\x30\x31",
+       "visa_cod":("A0000000031010","VISA - Credit"),
+       "visa_ele":("A0000000032010","VISA - Electron"),
+       "visa_pay":("A0000000032020","VISA - Pay"),
+       "visa_plu":("A0000000038010","VISA - Plus"),
+       "interac_can":("A0000002771010","Interac Canada"),
+       "pse":("315041592e5359532e4444463031",
               "Payment system environment"),
-       "mc_mcc":("\xA0\x00\x00\x00\x04\x10\x10","MasterCard - credit or debit"),
-       "mc_msi":("\xA0\x00\x00\x00\x04\x30\x60","MasterCard - Maestro"),
-       "mc_cir":("\xA0\x00\x00\x00\x04\x60\x00","MasterCard - Cirrus")
+       "mc_mcc":("A0000000041010","MasterCard - credit or debit"),
+       "mc_msi":("A0000000043060","MasterCard - Maestro"),
+       "mc_cir":("A0000000046000","MasterCard - Cirrus")
        } # Add all applications found here: 
 
     
