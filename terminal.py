@@ -19,7 +19,7 @@ along with EMVZombie.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from javax.smartcardio import TerminalFactory, CommandAPDU
-from util import die, usign
+import util
 
 # GLOBAL VARIABLES
 PROTO_DEF = "*"
@@ -73,7 +73,7 @@ def ch_def():
         ch = card.getBasicChannel()
         return ch
     except:
-        die("could not get a connection to the card with the default terminal.")
+        util.die("could not get a connection to the card with the default terminal.")
         
 # TODO: Refactor this class code for use with the Python with statement?
 class Terminal:
@@ -88,7 +88,7 @@ class Terminal:
     def select(self, aid):
         """ Returns the command/response pair for the SELECT command.
          Parameter aid is a byte string representing the aid to select."""
-        
+        aid = util.str2ba(aid)
         # SELECT command encoding.
         command = CommandAPDU(0x00, 0xa4, 0x04, 0x00, aid)
         return self.send_command(command)                 
@@ -193,19 +193,22 @@ class Terminal:
         # this will take the array of signed values and cast it to a
         # list of "unsigned" integer. This is the expected type by most
         # of the EMVzombie toolkit functions.  
-        f = lambda x : tuple([usign(i) for i in x]) 
+        f = lambda x : tuple([util.usign(i) for i in x]) 
         
         response_all = self.ch.transmit(com).getBytes()
         
         response = response_all[:-2]
         command = com.getBytes()
         
-        sw1 = usign(response_all[-2])
-        sw2 = usign(response_all[-1])
+        sw1 = util.usign(response_all[-2])
+        sw2 = util.usign(response_all[-1])
         
         status = (sw1 << 8) | (sw2)
-                
-        return f(command), f(response), status
+        
+        b_command = f(command)
+        b_response = f(response)
+                           
+        return util.resp2str(b_command), util.resp2str(b_response), status
         
     
     

@@ -34,10 +34,19 @@ def resp2str(val):
     """returns a human readable string from a card command response."""
     return "".join([hex(i)[2:].zfill(2) for i in val])
 
-def str2resp(val):
-    """returns a machine readable string from a human readable string."""
-    part = partition(val)
-    return tuple([chr(i) for i in part])
+def str2ba(val):
+    """returns a byte array from a human readable string.
+    
+    Example
+    =======
+    >>> str2ba('A0000000031010')
+    '\xA0\x00\x00\x00\x03\x10\x10'
+    >>> str2ba('A0000000032010')
+    '\xA0\x00\x00\x00\x03\x20\x10'
+    
+    """
+    part = partition(val, 2)
+    return "".join([chr(int(i,16)) for i in part])
 
 def partition(val, n):
     """ Returns a sequence of non overlapping lists of n items taken from val. 

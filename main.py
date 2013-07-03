@@ -56,8 +56,8 @@ def main():
                 type=argparse.FileType()
                 )
     
-    args =  parser.parse_args(['--listaid'])
-    
+    args = parser.parse_args()
+        
     if args.listaid:
         aid_list()
                    
@@ -73,24 +73,17 @@ def aid_list():
     supp_app = set([])
     
     # PSE selection.
-    sel_aid = emv.aid['pse']
-    sel_pse_c, sel_pse_r, sel_pse_s = term.select(sel_aid[AID_INDEX])
-    print sel_pse_r
-        
+    pse_aid = emv.aid['pse']
+    sel_pse_c, sel_pse_r, sel_pse_s = term.select(pse_aid[AID_INDEX])
+            
     # If the application supports PSE, add it to the set of supported
     # applications.
     if sel_pse_s == 0x9000:
-        pse_aid = supertlv.find("84", r2str(sel_pse_r))
-        # if we cannot retrieve the aid from the PSE response, it means the 
-        # the card sent a malformed or invalid response. We do not really care
-        # but we need to add the AID by some other way.
-        if not pse_aid:
-            pse_aid = [i for i in sel_aid[AID_INDEX] if (i != '\\' and i != 'x')]
-        
         supp_app.add(pse_aid)
-        # Also add the list of applications that can be extracted from the 
-        # pse response.
-        sfi = supertlv.find("88")
+        
+        # extract the list of applications supported by the card based on the 
+        # PSE response.
+        sfi = supertlv.find("88", sel_pse_r)
         
         if sfi:
             status = 0x9000
