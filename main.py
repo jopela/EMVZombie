@@ -60,6 +60,11 @@ def main():
         
     if args.listaid:
         aid_list()
+    elif args.aid:
+        clone(args.aid)
+    else:
+        print "nothing to do, quitting"
+        
                    
     return
 
@@ -88,7 +93,7 @@ def aid_list():
         if sfi:
             status = 0x9000
             while status == 0x9000:
-                # read all the possible record of that SFI
+                # read all the possible record of that SFIbran
                 break
             
 def select_all(terminal):
@@ -96,7 +101,28 @@ def select_all(terminal):
     returns the set of AID that returned 0x9000 for the SELECT command.
     """
     return None
-                
+
+def clone(aid):
+    
+    term = terminal.Terminal()
+    # Application selection.
+    select_c, select_r, select_s = term.select(aid)
+    
+    if select_s == 0x9000:
+        print "*" * 10 + "Select Response" + "*" * 10
+        print supertlv.human(select_r)
+    else:
+        print "select command returned error status {0}".format(hex(select_s))
+    
+    # get processing option.
+    gpo_c, gpo_r, gpo_s = term.get_processing_options()
+    
+    if gpo_s == 0x9000:
+        print "*" * 10 + "Get processing Option Response" + "*" * 10
+        print supertlv.human(gpo_r)
+    else:
+        print "gpo command returned error status {0}".format(hex(select_s))
+                              
 if __name__ == "__main__":
     main()
 
